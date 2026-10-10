@@ -63,8 +63,13 @@ warnings.filterwarnings("ignore", message=".*uses fixed sampling defaults.*", ca
 
 _ENV_VAR_BY_BACKEND = {"groq": "GROQ_API_KEY", "gemini": "GOOGLE_API_KEY"}
 _MODEL_BY_BACKEND = {
-    "groq": "openai/gpt-oss-120b",
-    "gemini": "gemini-3.6-flash",
+    # "groq": "openai/gpt-oss-120b",
+    # "gemini": "gemini-3.6-flash",
+    # "groq": "llama3-8b-8192", 
+    # "gemini": "gemini-1.5-flash",
+    "groq": "openai/gpt-oss-20b",
+    # "gemini": "gemini-2.0-flash",
+    "gemini": "gemini-3.5-flash-lite",
 }
 _DEFAULT_REQUEST_TIMEOUT_SECONDS = 60
 _MAX_NUMBERED_KEYS = 10
