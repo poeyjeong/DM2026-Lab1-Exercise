@@ -36,8 +36,10 @@ def test_variance_filter_tool_known_answer_5():
     assert variances_dict["beta"] == pytest.approx(0.2344, abs=1e-3)
     assert variances_dict["always"] == pytest.approx(0.1094, abs=1e-3)
     
-    assert set(res["kept_terms"]) == {"alpha", "beta", "delta", "gamma"}
-    assert res["removed_terms"] == ["always"]
+    kept_terms = full_report[full_report["variance"] >= 0.15]["term"].tolist()
+    removed_terms = full_report[full_report["variance"] < 0.15]["term"].tolist()
+    assert set(kept_terms) == {"alpha", "beta", "delta", "gamma"}
+    assert removed_terms == ["always"]
 
 def test_pearson_filter_tool_known_answer_6():
     """
@@ -62,7 +64,8 @@ def test_pearson_filter_tool_known_answer_6():
     pearson_filter_tool = next(t for t in filtering_tools if t.name == "pearson_filter_tool")
     res = pearson_filter_tool.invoke({"target_class": "catB"})
     
-    corrs = res["correlations"]
+    full_report = session.results_store[res["result_id"]]["full_report"]
+    corrs = dict(zip(full_report["term"], full_report["pearson_r"]))
     assert corrs["alpha"] == pytest.approx(-0.6882, abs=1e-3)
     assert corrs["always"] == pytest.approx(0.3780, abs=1e-3)
     assert corrs["beta"] == pytest.approx(-0.7746, abs=1e-3)
@@ -95,13 +98,13 @@ def test_spearman_filter_tool_known_answer_6():
     spearman_filter_tool = next(t for t in filtering_tools if t.name == "spearman_filter_tool")
     res = spearman_filter_tool.invoke({"target_class": "catB"})
     
-    # Check Spearman rank correlation against known answer #6:
-    # alpha: -0.7500
-    # always: 0.3780
-    # beta: -0.7746
-    # delta: 1.0000
-    # gamma: 0.9363
-    corrs = res["correlations"]
+    # Check top_correlations_preview and full report from session.results_store
+    assert "top_correlations_preview" in res
+    assert res["target_class"] == "catB"
+    assert res["total_terms_analyzed"] == 5
+    
+    full_report = session.results_store[res["result_id"]]["full_report"]
+    corrs = dict(zip(full_report["term"], full_report["spearman_r"]))
     assert corrs["alpha"] == pytest.approx(-0.7500, abs=1e-3)
     assert corrs["always"] == pytest.approx(0.3780, abs=1e-3)
     assert corrs["beta"] == pytest.approx(-0.7746, abs=1e-3)
