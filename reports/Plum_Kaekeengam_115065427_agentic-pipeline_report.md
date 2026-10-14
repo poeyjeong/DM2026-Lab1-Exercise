@@ -1,7 +1,7 @@
 # Your report
 
 <!-- 1 -->
-Started loading the dataset for 4 categories: `alt.atheism`, `soc.religion.christian`, `comp.graphics`, and `sci.med`. The total dataset initially had 2,257 documents (`result_id: load_dataset_2`).
+Started `load_dataset_tool` for 4 categories: `alt.atheism`, `soc.religion.christian`, `comp.graphics`, and `sci.med`. The total dataset initially had 2,257 documents (`result_id: load_dataset_2`).
 
 <!-- 2 -->
 `inspect_data_tool` confirmed that the text bodies and their respective category labels were formatted correctly (`result_id: inspect_2`).
@@ -35,10 +35,6 @@ To address the extreme sparsity, reduce noise, and resolve API context length li
 
 <!-- 11 -->
 Next, I applied the `pearson_filter_tool` targeting the `comp.graphics` category (`result_id: pearson_filter_6`) to find the terms most highly correlated with this topic. The tool successfully identified domain-specific terms, with the top 3 being "graphics" (r ≈ 0.384), "card" (r ≈ 0.342), and "animation" (r ≈ 0.315). This confirms that the filtering successfully surfaced relevant features for the computer graphics category despite the reduced sample size.
-
-<!-- 12 -->
-I used the `visualize_result_tool` to generate a bar chart of the top 10 correlated terms, which visually confirmed that the filtering surfaced relevant features for the computer graphics category despite the reduced sample size.
-![Pearson Correlation Bar Chart](../plots/Plum_Kaekeengam_agentic-pipeline_plot_turn40.png) 
 
 <!-- 12 -->
 To observe the relationships among the top extracted features, I generated a correlation matrix using the `feature_correlation_matrix_tool` (`result_id: feature_correlation_matrix_7`). 
